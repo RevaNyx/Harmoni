@@ -1,0 +1,33 @@
+<h1>Welcome to Your Dashboard, <%= current_user.first_name %>!</h1>
+<% if @family %>
+  <h2>Your Family: <%= @family.name %></h2>
+  <h3>Family Members:</h3>
+  <ul>
+    <% @members.each do |member| %>
+      <li>
+        <%= member.first_name %>
+        (<%= member.role.name %>) - Username: <%= member.username %>
+      </li>
+    <% end %>
+  </ul>
+  <%= link_to "Add Family Member", family_path(@family) %>
+<% else %>
+  <p>You don't have a family yet. <%= link_to "Create One Now", new_family_path %>.</p>
+<% end %>
+
+<p>Your Tasks:</p>
+
+<!-- Link to the task creation page -->
+<%= link_to "Create a New Task", new_task_path, class: "btn btn-primary" %>
+
+<hr>
+
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      <%= link_to task.title, task_path(task), class: "btn btn-link" %> 
+      (Priority: <%= task.priority.capitalize %>, Status: <%= task.status.capitalize %>)
+    </li>
+  <% end %>
+</ul>
+

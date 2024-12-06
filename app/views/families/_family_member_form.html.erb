@@ -1,0 +1,46 @@
+
+<% if @family %>
+  <h2>Add a New Family Member</h2>
+  <%= form_with model: @new_member, url: create_member_family_path(@family), local: true do |f| %>
+    <div>
+      <%= f.label :username, "Username" %>
+      <%= f.text_field :username, placeholder: "Enter username" %>
+    </div>
+
+    <div>
+      <%= f.label :first_name, "First Name" %>
+      <%= f.text_field :first_name, placeholder: "Enter first name" %>
+    </div>
+
+    <div>
+      <%= f.label :last_name, "Last Name" %>
+      <%= f.text_field :last_name, placeholder: "Enter last name" %>
+    </div>
+
+    <div>
+      <%= f.label :role_id, "Select Role" %>
+      <%= f.collection_select :role_id, Role.all, :id, :name, prompt: "Choose Role" %>
+    </div>
+
+    <div>
+      <%= f.label :email, "Email" %>
+      <%= f.email_field :email, placeholder: "Enter email" %>
+    </div>
+
+    <div
+        <%= f.label :password, "Password" %>
+        <%= f.password_field :password, placeholder: "Enter password" %>
+    </div>
+
+    <div>
+        <%= f.label :password_confirmation, "Confirm Password" %>
+        <%= f.password_field :password_confirmation, placeholder: "Confirm password" %>
+    </div>
+
+    <div>
+      <%= f.submit "Add Member" %>
+    </div>
+  <% end %>
+<% else %>
+  <p>You don't have a family yet. <%= link_to "Create One", new_family_path %>.</p>
+<% end %>
