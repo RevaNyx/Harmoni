@@ -5,5 +5,4 @@ set -o errexit
 bundle install
 bundle exec rails assets:precompile
 bundle exec rails assets:clean
-
-chmod a+x bin/render-build.sh
+bundle exec rails db:migrate
