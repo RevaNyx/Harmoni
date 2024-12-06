@@ -8,12 +8,18 @@ Rails.application.routes.draw do
   get "home/index"
 
   # Tasks routes
-  resources :tasks
+  resources :tasks, only: [:destroy, :edit, :update, :new, :create]
+  resources :appointments, except: [:new, :edit]
+get "/appointments/new", to: "appointments#show", as: "new_appointment"
+
+
 
   # Families routes
   resources :families do
     # Route to handle adding family members
     post :create_member, on: :member
+    # Route to handle removing family members
+    delete :remove_member, on: :member
   end
 
   # Health check and PWA files

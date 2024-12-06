@@ -1,0 +1,34 @@
+<%= form_with model: @appointment, local: true do |f| %>
+    <div>
+      <%= f.label :title, "Title" %>
+      <%= f.text_field :title, required: true %>
+    </div>
+  
+    <div>
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description %>
+    </div>
+  
+    <div>
+      <%= f.label :start_time, "Start Time" %>
+      <%= f.datetime_select :start_time %>
+    </div>
+  
+    <div>
+      <%= f.label :end_time, "End Time" %>
+      <%= f.datetime_select :end_time %>
+    </div>
+  
+    <div>
+      <%= f.label :recurrence, "Recurrence" %>
+      <%= f.select :recurrence, Appointment.recurrences.keys.map { |key| [key.capitalize, key] }, prompt: "Select Recurrence" %>
+    </div>
+  
+    <div>
+      <%= f.label :user_id, "Assign To" %>
+      <%= f.collection_select :user_id, @family.members, :id, :first_name, prompt: "Assign to a family member" %>
+    </div>
+  
+    <%= f.submit "Save Appointment", class: "btn btn-primary" %>
+  <% end %>
+  
