@@ -1,0 +1,13 @@
+<h2>Connected Calendars</h2>
+<% if @calendars.any? %>
+  <ul>
+    <% @calendars.each do |calendar| %>
+      <li>
+        <strong><%= calendar.calendar_name %></strong> - <%= calendar.provider_name %>
+        <%= link_to 'View Availability', calendar_path(calendar.calendar_id), class: "btn btn-primary" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No calendars connected. <%= link_to 'Connect a Calendar', auth_cronofy_path %></p>
+<% end %>

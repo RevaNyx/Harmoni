@@ -8,9 +8,13 @@ Rails.application.routes.draw do
   get "home/index"
 
   # Tasks routes
+  resources :calendars, only: [:index, :show]
+
   resources :tasks, only: [:destroy, :edit, :update, :new, :create]
   resources :appointments, except: [:new, :edit]
-get "/appointments/new", to: "appointments#show", as: "new_appointment"
+  get "/appointments/new", to: "appointments#show", as: "new_appointment"
+  get 'auth/cronofy', to: 'cronofy#connect'
+  get 'auth/cronofy/callback', to: 'cronofy#callback'
 
 
 

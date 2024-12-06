@@ -25,6 +25,10 @@ class User < ApplicationRecord
     owned_family || family
   end
 
+  def cronofy_connected?
+    access_token.present? && refresh_token.present?
+  end
+
 
   private
 

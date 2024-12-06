@@ -1,0 +1,6 @@
+require 'cronofy'
+
+# Ensure these environment variables are set correctly
+CRONOFY_CLIENT_ID = ENV['CRONOFY_CLIENT_ID']
+CRONOFY_CLIENT_SECRET = ENV['CRONOFY_CLIENT_SECRET']
+CRONOFY_REDIRECT_URI = ENV['CRONOFY_REDIRECT_URI']

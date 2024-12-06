@@ -71,3 +71,20 @@
     <p>No appointments scheduled yet.</p>
   <% end %>
 </ul>
+<hr>
+<h2>Connected Calendars</h2>
+
+<% if current_user.cronofy_connected? %>
+  <p>Connected to Cronofy. You can now manage your calendars!</p>
+  <p><strong>Connected calendars:</strong></p>
+  <% @calendars.each  do |calendar| %>
+    <div class="row bg-light border mb-2 p-2">
+      <div class="col-auto pt-1"><strong>Profile:</strong> <%= calendar.profile_name %> (<%= calendar.provider_name %>) </div>
+      <div class="col-auto pt-1"><strong>Calendar name:</strong> <%= calendar.calendar_name %></div>
+      <div class="col-auto"><%= link_to 'View availability', calendar_path(calendar.calendar_id), class: "btn btn-secondary" %></div>
+    </div>
+<% end %>
+
+<% else %>
+ <p> No calendars connected. <%= link_to 'Connect to Cronofy', auth_cronofy_path, class: 'btn btn-primary' %></p>
+<% end %>

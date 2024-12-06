@@ -1,0 +1,12 @@
+<h2>Available Time Slots</h2>
+<% if @available_slots.present? %>
+  <ul>
+    <% @available_slots.each do |slot| %>
+      <li>
+        <%= slot.start.strftime("%Y-%m-%d %H:%M") %> - <%= slot.end.strftime("%H:%M") %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No available time slots found for this calendar.</p>
+<% end %>
