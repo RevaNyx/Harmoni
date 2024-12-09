@@ -1,31 +1,44 @@
-<%= form_with(model: task, local: true, url: task_path(task), method: :patch, html: { id: "edit-task-form" }) do |f| %>
-    <div class="field">
-      <%= f.label :title %>
-      <%= f.text_field :title %>
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card p-4 shadow-lg" style="width: 50rem;">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">Create a New Task</h2>
+
+      <%= form_with model: @task, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :title, "Task Title", class: "form-label" %>
+          <%= f.text_field :title, required: true, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :description, "Task Description", class: "form-label" %>
+          <%= f.text_area :description, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :due_date, "Due Date", class: "form-label" %>
+          <%= f.datetime_select :due_date, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :priority, "Priority", class: "form-label" %>
+          <%= f.select :priority, Task.priorities.keys.map { |p| [p.capitalize, p] }, class: "form-select" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :status, "Status", class: "form-label" %>
+          <%= f.select :status, Task.statuses.keys.map { |s| [s.capitalize, s] }, class: "form-select" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :user_id, "Assign To", class: "form-label" %>
+          <%= f.collection_select :user_id, @members, :id, :first_name, prompt: "Assign to a family member", class: "form-select" %>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <%= f.submit "Save Task", class: "btn btn-primary btn-lg" %>
+          <%= link_to "Cancel", dashboard_path, class: "btn btn-secondary btn-lg" %>
+        </div>
+      <% end %>
     </div>
-  
-    <div class="field">
-      <%= f.label :description %>
-      <%= f.text_area :description %>
-    </div>
-  
-    <div class="field">
-      <%= f.label :due_date %>
-      <%= f.datetime_select :due_date %>
-    </div>
-  
-    <div class="field">
-      <%= f.label :priority %>
-      <%= f.select :priority, Task.priorities.keys.map { |p| [p.capitalize, p] } %>
-    </div>
-  
-    <div class="field">
-      <%= f.label :status %>
-      <%= f.select :status, Task.statuses.keys.map { |s| [s.capitalize, s] } %>
-    </div>
-  
-    <div class="actions">
-      <%= f.submit "Save Changes", class: "btn btn-success" %>
-    </div>
-  <% end %>
-  
+  </div>
+</div>

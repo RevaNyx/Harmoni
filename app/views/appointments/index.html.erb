@@ -7,8 +7,8 @@
     <li>
       <strong><%= appointment.title %></strong> - <%= appointment.start_time.strftime("%A, %B %d at %I:%M %p") %>
       <%= link_to "View", appointment_path(appointment), class: "btn btn-link" %>
-      <%= link_to "Edit", edit_appointment_path(appointment), class: "btn btn-secondary" %>
-      <%= link_to "Delete", appointment_path(appointment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+     
+      <%= link_to "Delete", appointments_path(appointment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
     </li>
   <% end %>
 </ul>

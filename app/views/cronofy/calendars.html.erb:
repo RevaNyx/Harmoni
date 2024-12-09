@@ -1,0 +1,11 @@
+<h1>Your Calendars</h1>
+
+<% if @calendars.any? %>
+  <ul>
+    <% @calendars.each do |calendar| %>
+      <li><%= calendar['name'] %> - <%= calendar['provider_name'] %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No calendars available. Please connect your account or check back later.</p>
+<% end %>

@@ -7,4 +7,6 @@ class Task < ApplicationRecord
   validates :title, presence: true
   validates :due_date, presence: true
 
+  scope :incomplete, -> { where(status: "pending").order(:due_date) }
+
 end

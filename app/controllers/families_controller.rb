@@ -1,8 +1,12 @@
 class FamiliesController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_head_user, only: [:remove_member]
-
   
+  def index
+    @family = current_user.family # Assuming you have an association `has_one :family` in the User model
+    @members = @family.members if @family.present? # Assuming Family has_many :members
+  end
+
 
   def show
     @family = Family.find(params[:id])
@@ -62,6 +66,9 @@ class FamiliesController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def all_members
+    User.where(family_id: id) # Includes all users with this family_id, including the head
+  end
   
 
   private
@@ -84,5 +91,17 @@ class FamiliesController < ApplicationController
       redirect_to dashboard_path
     end
   end
+
+  def create_default_family
+  return unless role.name.downcase == "head" && owned_family.nil?
+
+  begin
+    new_family = Family.create!(name: "#{last_name}", user_id: id)
+    update!(family_id: new_family.id)
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error("Failed to create default family: #{e.message}")
+  end
+end
+
 
 end

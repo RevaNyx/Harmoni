@@ -16,8 +16,24 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+
+#Bootstrap
+gem 'bootstrap', '~> 5.3'
+
+
+# Use SCSS for stylesheets
+gem 'sassc-rails', '~> 2.1'
+
+
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
+# Cronofy API client [https://www.cronofy.com/developers/api/]
+gem 'cronofy'
+
+# dotenv-rails reads from .env [
+gem 'dotenv-rails', groups: [:development, :test]
+
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"

@@ -1,45 +1,52 @@
-<h1>Edit Task: <%= @task.title %></h1>
+<div class="container mt-5">
+  <h1 class="mb-4">Edit Task</h1>
 
-<%= form_with model: @task, local: true, url: task_path(@task), method: :patch do |f| %>
-  <% if @task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-      <ul>
-        <% @task.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form_with model: @task, local: true, class: "needs-validation" do |f| %>
+    <!-- Task Title -->
+    <div class="mb-3">
+      <%= f.label :title, class: "form-label" %>
+      <%= f.text_field :title, class: "form-control", placeholder: "Enter task title" %>
+    </div>
+
+    <!-- Task Description -->
+    <div class="mb-3">
+      <%= f.label :description, class: "form-label" %>
+      <%= f.text_area :description, class: "form-control", placeholder: "Enter task description", rows: 4 %>
+    </div>
+
+    <!-- Assign To -->
+    <div class="mb-3">
+      <%= f.label :user_id, "Assign To", class: "form-label" %>
+      <%= f.collection_select :user_id, @members, :id, :first_name, 
+                              prompt: "Select a family member", class: "form-select" %>
+    </div>
+
+    <!-- Due Date -->
+    <div class="mb-3">
+      <%= f.label :due_date, class: "form-label" %>
+      <%= f.datetime_select :due_date, class: "form-control" %>
+    </div>
+
+    <!-- Priority -->
+    <div class="mb-3">
+      <%= f.label :priority, class: "form-label" %>
+      <%= f.select :priority, Task.priorities.keys.map { |p| [p.capitalize, p] }, {}, class: "form-select" %>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+      <%= f.label :status, class: "form-label" %>
+      <%= f.select :status, Task.statuses.keys.map { |s| [s.capitalize, s] }, {}, class: "form-select" %>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="d-grid">
+      <%= f.submit "Save Changes", class: "btn btn-success btn-lg" %>
+    </div>
+
+    <!-- Cancel Button -->
+    <div class="d-grid mt-2">
+      <%= link_to "Cancel", tasks_path, class: "btn btn-secondary btn-lg" %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
-
-  <div class="field">
-    <%= f.label :due_date %>
-    <%= f.datetime_select :due_date %>
-  </div>
-
-  <div class="field">
-    <%= f.label :priority %>
-    <%= f.select :priority, Task.priorities.keys.map { |p| [p.capitalize, p] } %>
-  </div>
-
-  <div class="field">
-    <%= f.label :status %>
-    <%= f.select :status, Task.statuses.keys.map { |s| [s.capitalize, s] } %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update Task", class: "btn btn-success" %>
-  </div>
-<% end %>
-
-<%= link_to "Back to Task", task_path(@task), class: "btn btn-primary" %>
+</div>

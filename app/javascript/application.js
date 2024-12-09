@@ -1,8 +1,11 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "@hotwired/turbo-rails"
-import "controllers"
-import "./controllers/edit_task_modal";
-import "@rails/ujs";
-
-// Start Rails UJS
+import Rails from "@rails/ujs";
 Rails.start();
+
+import "@hotwired/turbo-rails";
+import * as bootstrap from "bootstrap";
+import "@popperjs/core";
+
+document.addEventListener("turbo:before-fetch-request", (event) => {
+  const { headers } = event.detail.fetchOptions || {};
+  headers["X-CSRF-Token"] = document.querySelector('meta[name="csrf-token"]').content;
+});

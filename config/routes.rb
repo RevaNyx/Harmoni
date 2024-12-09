@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
+
+
   
   # Dashboard route
   get "dashboard", to: "dashboard#index"
@@ -8,17 +10,26 @@ Rails.application.routes.draw do
   get "home/index"
 
   # Tasks routes
-  resources :tasks, only: [:destroy, :edit, :update, :new, :create]
-  resources :appointments, except: [:new, :edit]
-get "/appointments/new", to: "appointments#show", as: "new_appointment"
+  resources :tasks, only: [:index, :show, :edit, :update, :new, :create, :destroy]
 
 
+
+  
+  # Appointments routes
+  resources :appointments, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+
+  
+ 
+  
+
+  # Cronofy routes
+  get 'auth/cronofy', to: 'cronofy#connect'
+  get '/auth/cronofy/callback', to: 'cronofy#callback', as: :auth_cronofy_callback
+  get '/cronofy/calendars', to: 'cronofy#calendars', as: 'cronofy_calendars'
 
   # Families routes
   resources :families do
-    # Route to handle adding family members
     post :create_member, on: :member
-    # Route to handle removing family members
     delete :remove_member, on: :member
   end
 

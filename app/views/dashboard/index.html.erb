@@ -1,73 +1,68 @@
-<h1>Welcome to Your Dashboard, <%= current_user.first_name %>!</h1>
-<hr>
+<div class="container-fluid">
+  
 
-<% if @family %>
-  <h2>Your Family: <%= @family.name %></h2>
 
-  <% if @members.any? %>
-    <h3>Family Members:</h3>
-    <ul>
-      <% @members.each do |member| %>
-        <li>
-          <%= member.first_name %>
-          (<%= member.role.name %>) - Username: <%= member.username %>
-          <% if current_user == @family.head && member != current_user %>
-            <%= link_to "Remove", 
-                        remove_member_family_path(@family, member_id: member.id),
-                        method: :delete,
-                        data: { confirm: "Are you sure you want to remove #{member.first_name}?" },
-                        class: "btn btn-danger btn-sm" %>
+    <!-- Main Content Area -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Welcome, <%= current_user.first_name %>!</h1>
+      </div>
+
+      <%# Example: Upcoming Tasks Section %>
+      <div class="container mt-5">
+  
+
+  <!-- Upcoming Appointments -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2>Upcoming Appointments</h2>
+    </div>
+    <div class="card-body">
+      <% if @appointments.any? %>
+        <ul class="list-group">
+          <% @appointments.each do |appointment| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><%= appointment.title %></strong> - 
+                Scheduled: <%= appointment.start_time.strftime("%A, %B %d at %I:%M %p") %>
+                <% if appointment.user.present? %>
+                  <br><small>Belongs to: <%= appointment.user.first_name %></small>
+                <% end %>
+              </div>
+            </li>
           <% end %>
-        </li>
+        </ul>
+      <% else %>
+        <p class="text-muted">No appointments scheduled yet.</p>
       <% end %>
-    </ul>
-  <% else %>
-    <p>No members found in your family.</p>
-  <% end %>
+      <%= link_to 'Connect Calendar', "https://app.cronofy.com/oauth/authorize?client_id=#{ENV['CRONOFY_CLIENT_ID']}&redirect_uri=#{CGI.escape(ENV['CRONOFY_REDIRECT_URI'])}&response_type=code&scope=read_events create_event", class: 'btn btn-primary' %>
+      <%= link_to "View Connected Calendars", cronofy_calendars_path, class: "btn btn-secondary mt-3" %>
+    </div>
+  </div>
 
-  <%= link_to "Add Family Member", family_path(@family), class: "btn btn-primary" %>
-<% else %>
-  <p>You don't have a family yet. <%= link_to "Create One Now", new_family_path, class: "btn btn-success" %>.</p>
-<% end %>
+  <!-- Upcoming Tasks -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2>Upcoming Tasks</h2>
+    </div>
+    <div class="card-body">
+      <% if @tasks.any? %>
+        <ul class="list-group">
+          <% @tasks.each do |task| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%A, %B %d") %>
+                <% if task.user.present? %>
+                  <br><small>Assigned to: <%= task.user.first_name %></small>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted">No tasks scheduled yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
 
-<hr>
-
-<h3>Your Family's Tasks:</h3>
-<%= link_to "Create a New Task", new_task_path, class: "btn btn-primary" %>
-<ul>
-  <% if @tasks.any? %>
-    <% @tasks.each do |task| %>
-      <li>
-        <strong><%= task.title %></strong>
-        - Assigned to: <%= task.user.first_name %> (Status: <%= task.status.capitalize %>)
-        <%= link_to "Delete", task_path(task), 
-                    method: :delete, 
-                    data: { confirm: "Are you sure you want to delete this task?" }, 
-                    class: "btn btn-danger btn-sm" %>
-      </li>
-    <% end %>
-  <% else %>
-    <p>No tasks created yet.</p>
-  <% end %>
-</ul>
-
-<hr>
-
-<h3>Your Appointments:</h3>
-<%= link_to "Create Appointment", new_appointment_path, class: "btn btn-primary" %>
-<ul>
-  <% if @appointments.any? %>
-    <% @appointments.each do |appointment| %>
-      <li>
-        <strong><%= link_to appointment.title, appointment_path(appointment) %></strong>
-        - Scheduled: <%= appointment.start_time.strftime("%A, %B %d at %I:%M %p") %>
-        <%= link_to "Delete", appointment_path(appointment), 
-            method: :delete, 
-            data: { turbo_confirm: "Are you sure?" }, 
-            class: "btn btn-danger btn-sm" %>
-      </li>
-    <% end %>
-  <% else %>
-    <p>No appointments scheduled yet.</p>
-  <% end %>
-</ul>
