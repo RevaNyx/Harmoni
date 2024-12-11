@@ -20,8 +20,9 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, confirmation: true, length: { minimum: 6 }, if: :password_required?
-  validates :role, presence: true
-  
+  validates :role_id, presence: true
+  validate :head_role_age_restriction, if: -> { role == 'head' }
+
   # Attributes to store tokens
   attribute :access_token, :string
   attribute :refresh_token, :string
@@ -29,6 +30,25 @@ class User < ApplicationRecord
   attribute :token_expiration, :datetime
 
   # Methods
+
+  def birth_date=(value)
+    if value.is_a?(Hash)
+      self[:birth_date] = Date.new(value['(1i)'].to_i, value['(2i)'].to_i, value['(3i)'].to_i) rescue nil
+    else
+      super
+    end
+  end
+
+  
+
+  def age
+    return unless birth_date
+
+    today = Date.today
+    age = today.year - birth_date.year
+    age -= 1 if birth_date > today - age.years # Adjust for birthday not passed yet this year
+    age
+  end
 
   # Returns the accessible family for the user
   def accessible_family
@@ -41,14 +61,26 @@ class User < ApplicationRecord
   end
 
   private
+
+  def head_role_age_restriction
+    if age.present? && age < 18
+      errors.add(:birth_date, 'You must be at least 18 years old to be the Head of Household.')
+    end
+  end
+
   # Creates a default family for the user if they are a head
   def create_default_family
+    Rails.logger.debug("Creating default family for user: #{inspect}")
+    
     return unless role.name.downcase == "head" && owned_family.nil?
   
     new_family = Family.create!(name: last_name, user_id: id)
+    Rails.logger.debug("New family created: #{new_family.inspect}")
+    
     update!(family_id: new_family.id)
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error("Failed to create default family: #{e.message}")
   end
+  
   
 end

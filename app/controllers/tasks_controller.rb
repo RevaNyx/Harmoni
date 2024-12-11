@@ -2,49 +2,53 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_family
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_members, only: [:new, :edit, :create]
 
   def index
     @tasks = @family ? @family.tasks : [] # Fetch tasks if the family exists
   end
 
   def show
-    # @task is already set by `set_task`
-  end
-
-  def edit
-    @task = @family.tasks.find(params[:id])
-    @members = @family.members # Ensure @members is set for the dropdown
-  end
-
-  def update
-    Rails.logger.debug "Params: #{params.inspect}" # Debugging
-    if @task.update(task_params)
-      redirect_to tasks_path, notice: "Task updated successfully."
-    else
-      flash.now[:alert] = "Failed to update task."
-      render :edit
-    end
+    @family_member = @task.user # Assuming `user_id` is the assigned user
   end
 
   def new
     @task = @family.tasks.new
-    @members = @family.members # List of family members to assign the task
+  end
+
+  def edit
+    # Task is already set by `set_task`
   end
 
   def create
-    @task = @family.tasks.new(task_params)
-    @members = @family.members # Ensure @members is set for rendering the form
-
+    task_params_with_due_date = build_due_date(task_params)
+  
+    @task = @family.tasks.new(task_params_with_due_date.except(:hour, :minute, :ampm, :calendar_date))
+  
     if @task.save
-      redirect_to tasks_path, notice: "Task created successfully."
+      redirect_to tasks_path, notice: 'Task created successfully.'
     else
-      flash.now[:alert] = "Failed to create task. Please fix the errors below."
-      render :new
+      flash.now[:alert] = 'Error creating task. Please check the form.'
+      set_members # Ensure @members is set for re-rendering the form
+      render :new, status: :unprocessable_entity
     end
   end
+  
+
+  def update
+    task_params_with_due_date = build_due_date(task_params)
+  
+    if @task.update(task_params_with_due_date.except(:hour, :minute, :ampm, :calendar_date))
+      redirect_to task_path(@task), notice: 'Task updated successfully.'
+    else
+      flash.now[:alert] = 'Error updating task. Please check the form.'
+      set_members # Ensure @members is set for re-rendering the form
+      render :edit, status: :unprocessable_entity
+    end
+  end
+  
 
   def destroy
-    @task = @family.tasks.find(params[:id])
     if @task.destroy
       flash[:notice] = "Task deleted successfully."
     else
@@ -52,10 +56,20 @@ class TasksController < ApplicationController
     end
     redirect_to tasks_path
   end
-  
-  
-  
+
   private
+
+  def build_due_date(params)
+    if params[:calendar_date].present? && params[:hour].present? && params[:minute].present? && params[:ampm].present?
+      date = params[:calendar_date]
+      hour = params[:hour].to_i
+      hour += 12 if params[:ampm] == "PM" && hour < 12
+      hour = 0 if params[:ampm] == "AM" && hour == 12
+      minute = params[:minute].to_i
+      params[:due_date] = DateTime.parse("#{date} #{hour}:#{minute}")
+    end
+    params
+  end
 
   def set_family
     @family = current_user.family || current_user.owned_family
@@ -69,10 +83,16 @@ class TasksController < ApplicationController
     @task = @family.tasks.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Task not found."
-    redirect_to dashboard_path
+    redirect_to tasks_path
+  end
+
+  def set_members
+    # Include the current user (head user) and any family members
+    @members = @family.members.to_a
+    @members << current_user unless @members.include?(current_user)
   end
 
   def task_params
-    params.require(:task).permit(:title, :description, :due_date, :priority, :status, :user_id)
+    params.require(:task).permit(:title, :description, :priority, :status, :user_id, :family_id, :due_date, :hour, :minute, :ampm, :calendar_date)
   end
 end

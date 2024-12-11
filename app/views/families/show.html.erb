@@ -1,2 +1,31 @@
-<h1>Manage Family: <%= @family.name %></h1>
-<%= render partial: "family_member_form", locals: { family: @family, new_member: @new_member } %>
+<div class="container mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header text-center bg-primary text-white">
+      <h2>Family: <%= @family.name %></h2>
+    </div>
+    <div class="card-body">
+      <h3 class="mb-4 text-primary">Family Members</h3>
+      <% if @family.members.any? %>
+        <ul class="list-group">
+          <% @family.members.each do |member| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <%= link_to "#{member.first_name} #{member.last_name}", family_family_member_path(@family, member), class: "text-decoration-none fw-bold" %>
+                <span class="text-muted d-block"><%= member.role.name.capitalize %></span>
+              </div>
+              <div>
+                <%= link_to 'Edit', edit_family_family_member_path(@family, member), class: 'btn btn-outline-warning btn-sm me-2' %>
+                <%= link_to "Delete", family_family_member_path(@family, member), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-outline-danger btn-sm' %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted">No family members found.</p>
+      <% end %>
+      <div class="mt-4 text-center">
+        <%= link_to 'Add Family Member', new_family_path, class: 'btn btn-primary btn-lg' %>
+      </div>
+    </div>
+  </div>
+</div>
