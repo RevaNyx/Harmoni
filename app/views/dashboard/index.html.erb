@@ -6,6 +6,10 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Welcome, <%= current_user.first_name %>!</h1>
       </div>
+      <div class="card-body text-center">
+        <p class="lead">Connect your calendar to manage appointments seamlessly.</p>
+        <%= link_to "Connect Cronofy Calendar", auth_cronofy_path, class: "btn btn-success btn-lg" %>
+      </div>
 
       <!-- Family Members -->
       <div class="card mb-4">
