@@ -26,6 +26,9 @@ class TasksController < ApplicationController
     @task = @family.tasks.new(task_params_with_due_date.except(:hour, :minute, :ampm, :calendar_date))
   
     if @task.save
+      # Call the Cronofy service to create the task
+      CronofyAppointmentAndTaskService.new(current_user).create_task(cronofy_task_params(@task))  
+
       redirect_to tasks_path, notice: 'Task created successfully.'
     else
       flash.now[:alert] = 'Error creating task. Please check the form.'
@@ -94,5 +97,15 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :description, :priority, :status, :user_id, :family_id, :due_date, :hour, :minute, :ampm, :calendar_date)
+  end
+
+  def cronofy_task_params(task)
+    {
+      event_id: task.id.to_s, # Use the task ID as the event identifier
+      summary: task.title,
+      description: task.description,
+      start: task.due_date, # Assuming due_date is used as the start time
+      end: task.due_date + 1.hour # Set an end time one hour after the start
+    }
   end
 end

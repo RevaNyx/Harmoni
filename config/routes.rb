@@ -26,6 +26,16 @@ Rails.application.routes.draw do
   get 'auth/cronofy', to: 'cronofy#connect'
   get '/auth/cronofy/callback', to: 'cronofy#callback', as: :auth_cronofy_callback
   get '/cronofy/calendars', to: 'cronofy#calendars', as: 'cronofy_calendars'
+  # omniauth for cronofy
+  get '/auth/:provider/callback', to: 'sessions#create'
+  get '/auth/failure', to: redirect('/')
+  
+
+
+
+
+
+
   get '/users', to: 'users#index'
 
 

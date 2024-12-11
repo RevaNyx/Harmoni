@@ -21,6 +21,8 @@ class AppointmentsController < ApplicationController
     @appointment.user = current_user # Assign the current user as the creator
 
     if @appointment.save
+       # Call the Cronofy service to create the appointment
+      CronofyAppointmentAndTaskService.new(current_user).create_appointment(cronofy_appointment_params(@appointment))
       redirect_to appointments_path, notice: "Appointment created successfully."
     else
       flash.now[:alert] = "Error creating appointment. Please fix the errors below."
@@ -77,4 +79,15 @@ class AppointmentsController < ApplicationController
   def appointment_params
     params.require(:appointment).permit(:title, :description, :start_time, :end_time, :recurrence, :user_id)
   end
+
+    # This method maps the Rails appointment to the Cronofy format
+    def cronofy_appointment_params(appointment)
+      {
+        event_id: appointment.id.to_s, # Use the appointment ID as the event identifier
+        summary: appointment.title,
+        description: appointment.description,
+        start: appointment.start_time,
+        end: appointment.end_time
+      }
+    end
 end

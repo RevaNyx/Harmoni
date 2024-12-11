@@ -24,12 +24,15 @@ gem 'bootstrap', '~> 5.3'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 
+#omniauth-cronofy
+
 
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 # Cronofy API client [https://www.cronofy.com/developers/api/]
 gem 'cronofy'
+gem 'omniauth-cronofy'
 
 # dotenv-rails reads from .env [
 gem 'dotenv-rails', groups: [:development, :test]

@@ -31,6 +31,15 @@ class User < ApplicationRecord
 
   # Methods
 
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
+      user.access_token = auth.credentials.token
+      user.refresh_token = auth.credentials.refresh_token
+      user.account_id = auth.uid
+      user.save!
+    end
+  end
+
   def birth_date=(value)
     if value.is_a?(Hash)
       self[:birth_date] = Date.new(value['(1i)'].to_i, value['(2i)'].to_i, value['(3i)'].to_i) rescue nil

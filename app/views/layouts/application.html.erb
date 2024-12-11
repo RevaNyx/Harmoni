@@ -46,7 +46,6 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-              
               <% if user_signed_in? %>
                 <li class="nav-item">
                   <%= link_to "Edit Profile", edit_user_registration_path, class: "nav-link" %>
@@ -97,6 +96,11 @@
               <li class="nav-item mb-2">
                 <%= link_to "Appointments", appointments_path, class: "nav-link px-3 py-2 rounded #{'active' if current_page?(appointments_path)}" %>
               </li>
+              <li>
+                <% if current_user && current_user.access_token.nil? %>
+                  <%= link_to "Connect Calendar", "/auth/cronofy" %>
+                <% end %>
+              </li
             </ul>
           </div>
         </nav>
