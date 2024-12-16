@@ -1,0 +1,52 @@
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card p-4 shadow-lg" style="max-width: 40rem; width: 100%;">
+    
+    <div class="card-body">
+      <%= form_with model: @appointment, local: true, class: "needs-validation" do |f| %>
+        <!-- Title -->
+        <div class="mb-3">
+          <%= f.label :title, "Title", class: "form-label" %>
+          <%= f.text_field :title, required: true, class: "form-control form-control-sm", placeholder: "Enter appointment title" %>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <%= f.label :description, "Description", class: "form-label" %>
+          <%= f.text_area :description, class: "form-control form-control-sm", rows: 3, placeholder: "Enter a brief description" %>
+        </div>
+
+        <!-- Start and End Time -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <%= f.label :start_time, "Start Time", class: "form-label" %>
+            <%= f.datetime_local_field :start_time, class: "form-control form-control-sm", required: true %>
+          </div>
+          <div class="col-md-6 mb-3">
+            <%= f.label :end_time, "End Time", class: "form-label" %>
+            <%= f.datetime_local_field :end_time, class: "form-control form-control-sm", required: true %>
+          </div>
+        </div>
+
+        <!-- Recurrence -->
+        <div class="mb-3">
+          <%= f.label :recurrence, "Recurrence", class: "form-label" %>
+          <%= f.select :recurrence, Appointment.recurrences.keys.map { |key| [key.capitalize, key] }, 
+                        { prompt: "Select Recurrence" }, class: "form-select form-select-sm" %>
+        </div>
+
+        <!-- Assign To -->
+        <div class="mb-3">
+          <%= f.label :user_id, "Assign To", class: "form-label" %>
+          <%= f.collection_select :user_id, @members, :id, :first_name, 
+                                  { prompt: "Assign to a family member" }, class: "form-select form-select-sm" %>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-between">
+          <%= f.submit "Save Appointment", class: "btn btn-primary btn-lg px-4" %>
+          <%= link_to "Cancel", dashboard_path, class: "btn btn-secondary btn-lg px-4" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

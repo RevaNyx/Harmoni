@@ -1,57 +1,54 @@
 source "https://rubygems.org"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# Core dependencies
 gem "rails", "~> 7.2.2"
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
-# Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
-# Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "pg", "~> 1.1"                           # Use PostgreSQL as the database
+gem "puma", ">= 5.0"                         # Web server for Rails
+gem "sprockets-rails"                        # Original asset pipeline for Rails
 
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
+# JavaScript & Hotwire
+gem "importmap-rails"                        # ESM import maps for JavaScript
+gem "turbo-rails"                            # Hotwire's SPA-like page accelerator
+gem "stimulus-rails"                         # Hotwire's JavaScript framework
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+# JSON API
+gem "jbuilder"                               # Build JSON APIs with ease
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+# Styling and frontend
+gem "bootstrap", "~> 5.3"                    # Bootstrap for UI components
+gem "sassc-rails", "~> 2.1"                  # SCSS for stylesheets
 
-# Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+# Authentication & OAuth
+gem "devise", "~> 4.9"                       # User authentication
+gem "omniauth-rails_csrf_protection", "~> 1.0.0" # CSRF protection for OmniAuth
+gem "cronofy"                                # Cronofy API client
+gem "omniauth-cronofy"                       # OmniAuth strategy for Cronofy
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+# Environment variables
+gem "dotenv-rails", groups: [:development, :test] # Load environment variables from `.env`
 
+# Utilities
+gem "ostruct"                                # Simple data objects
+gem "tzinfo-data", platforms: %i[windows jruby]   # Timezone data for Windows
+gem "bootsnap", require: false               # Reduces boot times through caching
+
+# Optional features (uncomment if needed)
+# gem "redis", ">= 4.0.1"                    # Use Redis adapter for Action Cable
+# gem "bcrypt", "~> 3.1.7"                   # Secure passwords for Active Model
+# gem "image_processing", "~> 1.2"           # Active Storage variants
+
+# Development and testing
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude" # Debugging
+  gem "brakeman", require: false                                   # Security scanner
+  gem "rubocop-rails-omakase", require: false                      # Ruby style checker
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
+  gem "web-console"                          # Console on exception pages
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
+  gem "capybara"                             # System testing
+  gem "selenium-webdriver"                   # Web driver for testing
 end

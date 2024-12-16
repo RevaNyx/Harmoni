@@ -1,14 +1,39 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  # Dashboard route
+  get "dashboard", to: "dashboard#index"
 
-  # Render dynamic PWA files from app/views/pwa/*
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # Home page route
+  get "home/index"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Tasks routes
+  resources :tasks, only: [:index, :show, :edit, :update, :new, :create, :destroy]
+
+  # Appointments routes
+  resources :appointments, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+
+  # Families and family members routes
+  resources :families do
+    resources :family_members, only: [:show, :new, :create, :edit, :update, :destroy]
+    post :create_member, on: :member
+    delete :remove_member, on: :member
+  end
+
+  # Cronofy OAuth routes (cleaned up)
+  get '/auth/cronofy', to: 'cronofy_auth#connect', as: :auth_cronofy
+  get '/auth/cronofy/callback', to: 'cronofy_auth#callback', as: :auth_cronofy_callback
+  get '/cronofy/calendars', to: 'cronofy#calendars', as: :cronofy_calendars
+
+  # Omniauth failure route
+  get '/auth/failure', to: redirect('/')
+
+  get "/about", to: "pages#about", as: :about
+  get "/contact", to: "pages#contact", as: :contact
+
+
+  root to: 'home#index'
+
 end

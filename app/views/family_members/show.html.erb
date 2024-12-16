@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white text-center">
+      <h2>Family Member Details</h2>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>First Name:</strong> <%= @family_member.first_name %></p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Last Name:</strong> <%= @family_member.last_name %></p>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>Username:</strong> <%= @family_member.username %></p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Email:</strong> <%= @family_member.email %></p>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>Birthdate:</strong> <%= @family_member.birth_date.present? ? @family_member.birth_date.strftime("%B %d, %Y") : "Not provided" %></p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Role:</strong> <%= @family_member.role.name.capitalize %></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <%= link_to 'Edit', edit_family_family_member_path(@family, @family_member), class: 'btn btn-warning' %>
+      <%= link_to 'Back to Family', family_path(@family), class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="container-fluid">
+  
+
+    <!-- Main Content Area -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Welcome, <%= current_user.first_name %>!</h1>
+      </div>
+      
+
+      <div>
+        <h1>Your Calendars</h1>
+
+        <% if @calendars.any? %>
+          <ul>
+            <% @calendars.each do |calendar| %>
+              <li><%= calendar['name'] %> - <%= calendar['provider_name'] %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>No calendars available. Please connect your account or check back later.</p>
+        <% end %>
+      </div>
+
+      <!-- Family Members -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h2>Family Members</h2>
+        </div>
+        <div class="card-body">
+          <% if @family.members.any? %>
+            <ul class="list-group">
+              <% @family.members.each do |member| %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <%= link_to "#{member.first_name} #{member.last_name}", family_family_member_path(@family, member), class: "text-decoration-none" %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No family members added yet.</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Upcoming Appointments -->
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h2>Upcoming Appointments</h2>
+        </div>
+        <div class="card-body">
+          <% if @appointments.any? %>
+            <ul class="list-group">
+              <% @appointments.each do |appointment| %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= link_to appointment.title, appointment_path(appointment), class: "text-decoration-none" %></strong>
+                    <br>Scheduled: <%= appointment.start_time.strftime("%A, %B %d at %I:%M %p") %>
+                    <% if appointment.user.present? %>
+                      <br><small>Belongs to: <%= appointment.user.first_name %></small>
+                    <% end %>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No appointments scheduled yet.</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Upcoming Tasks -->
+      <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+          <h2>Upcoming Tasks</h2>
+        </div>
+        <div class="card-body">
+          <% if @tasks.any? %>
+            <ul class="list-group">
+              <% @tasks.each do |task| %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= link_to task.title, task_path(task), class: "text-decoration-none" %></strong>
+                    <br>Due: <%= task.due_date.strftime("%A, %B %d") %>
+                    <% if task.user.present? %>
+                      <br><small>Assigned to: <%= task.user.first_name %></small>
+                    <% end %>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No tasks scheduled yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
