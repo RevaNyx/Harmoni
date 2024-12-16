@@ -1,4 +1,4 @@
-class CronofyAuthController < ApplicationController
+class CronofyController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:callback]
 
   def connect
