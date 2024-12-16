@@ -11,12 +11,8 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div>
                 <%= link_to "#{member.first_name} #{member.last_name}", family_family_member_path(@family, member), class: "text-decoration-none fw-bold" %>
-
                 <span class="text-muted d-block"><%= member.role.name.capitalize %></span>
               </div>
-                <div class="col-md-6">
-                    <p><strong>Birthdate:</strong> <%= @family_member.birth_date.present? ? @family_member.birth_date.strftime("%B %d, %Y") : "Not provided" %></p>
-                </div>
               <div>
                 <%= link_to 'Edit', edit_family_family_member_path(@family, member), class: 'btn btn-outline-warning btn-sm me-2' %>
                 <%= link_to "Delete", family_family_member_path(@family, member), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-outline-danger btn-sm' %>
