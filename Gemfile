@@ -19,7 +19,8 @@ gem "jbuilder"
 
 #Bootstrap
 gem 'bootstrap', '~> 5.3'
-
+# Use Redis for caching [https://redis.io/]
+gem 'omniauth-rails_csrf_protection', '~> 1.0.0'
 
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'

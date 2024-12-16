@@ -3,8 +3,10 @@ class ApplicationController < ActionController::Base
   before_action :load_sidebar_data
   before_action :log_csrf_token
   before_action :ensure_cronofy_token_valid
-  protect_from_forgery unless: -> { request.format.json? }
+  protect_from_forgery with: :exception, unless: -> { request.path.start_with?('/auth') }
   skip_before_action :verify_authenticity_token, if: -> { request.format.html? }
+  before_action :log_session_data
+
   # Log the CSRF token for debugging
   def log_csrf_token
     Rails.logger.debug "CSRF Token: #{form_authenticity_token}"
@@ -104,4 +106,12 @@ class ApplicationController < ActionController::Base
       refresh_cronofy_token(current_user)
     end
   end
+
+
+  protected
+
+  def log_session_data
+    Rails.logger.info("Session data: #{session.to_hash}")
+  end
+
 end

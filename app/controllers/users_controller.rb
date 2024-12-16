@@ -1,6 +1,16 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!
 
+        # Returns the user's Cronofy access token
+    def cronofy_access_token
+        self[:cronofy_access_token]
+    end
+
+    # Returns the user's Cronofy refresh token
+    def cronofy_refresh_token
+        self[:cronofy_refresh_token]
+    end
+
     def index
         @users = User.all
         @cronofy = cronofy_client

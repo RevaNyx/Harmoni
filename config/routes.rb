@@ -22,32 +22,18 @@ Rails.application.routes.draw do
     delete :remove_member, on: :member
   end
 
-  # Cronofy routes
-  get 'auth/cronofy', to: 'cronofy#connect'
-  get '/auth/cronofy/callback', to: 'cronofy#callback', as: :auth_cronofy_callback
-  get '/cronofy/calendars', to: 'cronofy#calendars', as: 'cronofy_calendars'
-  # omniauth for cronofy
-  get '/auth/:provider/callback', to: 'sessions#create'
+  # Cronofy OAuth routes (cleaned up)
+  get '/auth/cronofy', to: 'cronofy_auth#connect', as: :auth_cronofy
+  get '/auth/cronofy/callback', to: 'cronofy_auth#callback', as: :auth_cronofy_callback
+  get '/cronofy/calendars', to: 'cronofy#calendars', as: :cronofy_calendars
+
+  # Omniauth failure route
   get '/auth/failure', to: redirect('/')
-  
+
+  get "/about", to: "pages#about", as: :about
+  get "/contact", to: "pages#contact", as: :contact
 
 
+  root to: 'home#index'
 
-
-
-
-  get '/users', to: 'users#index'
-
-
-  #Pages routes
-  get "about", to: "pages#about", as: :about
-  get "contact", to: "pages#contact", as: :contact
-
-  # Health check and PWA files
-  get "up" => "rails/health#show", as: :rails_health_check
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-
-  # Root path
-  root "home#index"
 end
