@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Core dependencies
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 8.0.1"
 gem "pg", "~> 1.1"                           # Use PostgreSQL as the database
 gem "puma", ">= 5.0"                         # Web server for Rails
 gem "sprockets-rails"                        # Asset compilation for Rails
