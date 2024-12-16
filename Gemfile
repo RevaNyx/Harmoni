@@ -5,7 +5,7 @@ gem "rails", "~> 7.2.2"
 gem "pg", "~> 1.1"                           # Use PostgreSQL as the database
 gem "puma", ">= 5.0"                         # Web server for Rails
 gem "sprockets-rails"                        # Asset compilation for Rails
-gem 'mini_racer'                      
+gem 'mini_racer', platforms: :ruby           # ExecJS runtime for JavaScript                      
 # JavaScript & Hotwire
 gem "importmap-rails"                        # ESM import maps for JavaScript
 gem "turbo-rails"                            # Hotwire's SPA-like page accelerator
