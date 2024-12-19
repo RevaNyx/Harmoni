@@ -3,8 +3,10 @@ class FamilyMembersController < ApplicationController
     before_action :set_family_member, only: [:show, :edit, :update, :destroy]
       
     def show
-        @family_member = User.find(params[:id]) # Ensure this fetches a User record
-    end
+        @family = Family.find(params[:family_id])
+        @family_member = @family.family_members.find(params[:id])
+      end
+      
       
   
     def new
