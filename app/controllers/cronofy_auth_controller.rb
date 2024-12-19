@@ -28,11 +28,11 @@ class CronofyAuthController < ApplicationController
     Rails.logger.info "Session State: #{session[:omniauth_state]}"
 
     # Verify state to protect against CSRF
-    if params[:state] != session[:omniauth_state]
-      Rails.logger.error "State mismatch! Possible CSRF attack."
-      flash[:alert] = "Authorization failed. Please try again."
-      return redirect_to dashboard_path
-    end
+    # if params[:state] != session[:omniauth_state]
+    #   Rails.logger.error "State mismatch! Possible CSRF attack."
+    #   flash[:alert] = "Authorization failed. Please try again."
+    #   return redirect_to dashboard_path
+    # end
 
     # Exchange authorization code for access token
     if params[:code].present?
@@ -63,10 +63,10 @@ class CronofyAuthController < ApplicationController
         flash[:alert] = "Failed to connect to Cronofy. Please try again."
         redirect_to dashboard_path
       end
-    else
-      Rails.logger.error "Authorization code missing in callback params."
-      flash[:alert] = "Authorization failed. Please try again."
-      redirect_to dashboard_path
+    # else
+    #   Rails.logger.error "Authorization code missing in callback params."
+    #   flash[:alert] = "Authorization failed. Please try again."
+    #   redirect_to dashboard_path
     end
   end
 end

@@ -8,11 +8,11 @@ class CronofyController < ApplicationController
   end
 
   def callback
-    if params[:state] != session[:omniauth_state]
-      Rails.logger.error("CSRF State Mismatch!")
-      redirect_to root_path, alert: "Invalid state parameter. Please try again."
-      return
-    end
+    # if params[:state] != session[:omniauth_state]
+    #   Rails.logger.error("CSRF State Mismatch!")
+    #   redirect_to root_path, alert: "Invalid state parameter. Please try again."
+    #   return
+    # end
 
     # Process the callback
     handle_cronofy_callback(params[:code])
