@@ -4,9 +4,9 @@ class FamilyMembersController < ApplicationController
       
     def show
         @family = Family.find(params[:family_id])
-        @family_member = @family.family_members.find(params[:id])
-      end
-      
+        @family_member = @family.all_members.find(params[:id])
+    end
+
       
   
     def new
